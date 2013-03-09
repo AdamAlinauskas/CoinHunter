@@ -4,9 +4,9 @@ package
 	import org.flixel.*;
 	
 	[SWF(Width="800", height="600",backgroundColor="#ff00aa")]
-	public class Collide extends FlxGame
+	public class CoinHunter extends FlxGame
 	{
-		public function Collide() 
+		public function CoinHunter() 
 		{
 			super(400, 300, PlayState,2);
 		}	
