@@ -41,7 +41,6 @@ package
 			playerScoreText.color = 0xff0000B8;
 			add(playerScoreText);
 			
-			
 			enemyScoreText = new FlxText(playerScoreText.width, 10, 100);
 			enemyScoreText.color = 0xff990033;
 			add(enemyScoreText);
@@ -62,18 +61,7 @@ package
 			player.acceleration.x = 0;
 			player.acceleration.y = 0;
 			
-			if (FlxG.keys.RIGHT) {
-				player.acceleration.x = player.maxVelocity.x * 4;
-			}
-			if (FlxG.keys.LEFT) {
-				player.acceleration.x = -player.maxVelocity.x * 4;
-			}
-			if (FlxG.keys.UP) {
-				player.acceleration.y = -player.maxVelocity.y * 4;
-			}
-			if (FlxG.keys.DOWN) {
-				player.acceleration.y = player.maxVelocity.y * 4;
-			}
+			MovePlayer();
 			
 			FlxG.collide(player, level);
 			FlxG.collide(coins, level,enemyCollideWithLevel);
@@ -163,6 +151,22 @@ package
 			
 			if(player.health == 0){
 				player.kill();
+			}
+		}
+		
+		private function MovePlayer():void 
+		{
+			if (FlxG.keys.RIGHT) {
+				player.acceleration.x = player.maxVelocity.x * 4;
+			}
+			if (FlxG.keys.LEFT) {
+				player.acceleration.x = -player.maxVelocity.x * 4;
+			}
+			if (FlxG.keys.UP) {
+				player.acceleration.y = -player.maxVelocity.y * 4;
+			}
+			if (FlxG.keys.DOWN) {
+				player.acceleration.y = player.maxVelocity.y * 4;
 			}
 		}
 		
