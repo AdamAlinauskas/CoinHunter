@@ -1,5 +1,6 @@
 package  
 {
+	import flash.text.engine.BreakOpportunity;
 	import flash.utils.Dictionary;
 	import org.flixel.*;
 
@@ -8,9 +9,11 @@ package
 		var player:FlxSprite;
 		public var level:FlxTilemap;
 		var text:FlxText;
-		var health:FlxText;
+		var healthText:FlxText;
+		var playerScoreText:FlxText;
+		var enemyScoreText:FlxText;
 		var coins:FlxGroup;
-		var enemyGroup2:FlxGroup;
+		var enemies:FlxGroup;
 		var scores:Dictionary;
 		
 		override public function create():void 
@@ -18,17 +21,12 @@ package
 			super.create();
 			
 			scores = new Dictionary();
-			
-			
-			
-			
-			
-			
+
 			coins = createEnemyGroupFor(0xffffff00, 12);
-			enemyGroup2 = createEnemyGroupFor(0xff003366,3);
+			enemies = createEnemyGroupFor(0xff003366,3);
 			
 			add(coins);
-			add(enemyGroup2);
+			add(enemies);
 						
 			player = new FlxSprite(FlxG.width/2, 30);
 			player.makeGraphic(10, 12, 0xffaa1111);
@@ -38,19 +36,26 @@ package
 			player.health = 100;
 			
 			player.acceleration.y = 10;
-			player.maxVelocity.y = 80;
+			player.maxVelocity.y = 140;
 			player.drag.y = player.maxVelocity.y * 4;
 			
 			text = new FlxText(10, 10, 50, "Debug");
 			add(text);
 			
-			health = new FlxText(10, 30, 50);
-			add(health);
-			updateHealth();
-
+			healthText = new FlxText(100, 30, 50);
+			add(healthText);
+			
+			playerScoreText = new FlxText(10, 30, 100);
+			add(playerScoreText);
+			
+			enemyScoreText = new FlxText(10, 50, 100);
+			add(enemyScoreText);
 			
 			scores[player] = 0;
-
+			scores[enemies] = 0;
+			
+			updateScore();
+			updateHealth();
 
 			var data:Array = new Array(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
@@ -105,27 +110,21 @@ FlxG.bgColor = 0xffaaaaaa;
 			}
 			
 			FlxG.collide(player, level);
-
-			
 			FlxG.collide(coins, level,enemyCollideWithLevel);
-			FlxG.collide(enemyGroup2, level, enemyCollideWithLevel);
-			FlxG.collide(enemyGroup2, player,die);
+			FlxG.collide(enemies, level, enemyCollideWithLevel);
+			FlxG.collide(enemies, player,die);
 			FlxG.collide(coins, player, collectCoin);
-			FlxG.collide(coins, enemyGroup2, collectCoin);
+			FlxG.collide(coins, enemies, collectCoinForEnemyGroup);	
 			
-			//if (enemy.velocity.y  == 0) {
-//text.text = "Velocity is 0";
-				//enemy.acceleration.y = (enemy.acceleration.y * 4) * (-1);
-			//}
-			//else {
-				//text.text = "moving";
-				//}
-			//text.text = "" + enemy.acceleration.y;
-			
+			YouWin();
+		}
 		
-			
-			
-			
+		private function YouWin():void {
+			if(coins.countDead() == coins.length){
+				enemies.kill();
+				var text:String = scores[player] > scores[enemies] ? "You Win :)" : "Loser :(";				
+				add(new FlxText(FlxG.width / 2, FlxG.height / 3,100, "YOU WIN !!!"));
+			}
 		}
 		
 		private function createEnemyGroupFor(color:uint,count:uint) {
@@ -138,11 +137,12 @@ FlxG.bgColor = 0xffaaaaaa;
 		}
 		
 		private function updateHealth():void {
-				health.text = "Health: "+ player.health;
+				healthText.text = "Health: "+ player.health;
 		}
 		
 		private function updateScore():void {
-			
+			playerScoreText.text = "Player: " + scores[player];
+			enemyScoreText.text = "Enemy: " + scores[enemies];
 		}
 		
 		private function enemyCollideWithLevel(enemy:FlxSprite, level:FlxTilemap):void {
@@ -167,16 +167,19 @@ FlxG.bgColor = 0xffaaaaaa;
 			}
 		}
 		
-		private function collectCoin(coin:FlxSprite, player:FlxSprite):void {
-			text.text = "KILL";	
-			coin.kill();
-			scores[player] += 1;
-			
+		private function collectCoinForEnemyGroup(coin:FlxSprite, sprite:FlxSprite):void {
+			scores[enemies] += 1;
 			updateScore();
-			
+			collectCoin(coin, null);
+		}
+		
+		private function collectCoin(coin:FlxSprite, sprite:FlxSprite):void {
+			coin.kill();
+			if(sprite != null){
+				scores[sprite] += 1;
+				updateScore();
+			}
 			//	FlxG.play(SoundEffectCoin,0.3);
-			//	score++;
-			//	updateScore();
 		}
 		
 		private function die(enemy:FlxSprite, player:FlxSprite):void {
@@ -187,16 +190,10 @@ FlxG.bgColor = 0xffaaaaaa;
 				player.kill();
 				text.text = "YOU LOSE";
 			}
-			
-			//	FlxG.play(SoundEffectCoin,0.3);
-			//	score++;
-			//	updateScore();
 		}
-		
 		
 		public function randomNumberBetween(from:int, to:int):int {
 			return Math.floor(Math.random()*(to-from+1)+from);
 		}
 	}
-
 }
