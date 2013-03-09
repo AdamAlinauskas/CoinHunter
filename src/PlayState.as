@@ -14,17 +14,21 @@ package
 		var coins:FlxGroup;
 		var enemies:FlxGroup;
 		var scores:Dictionary;
-	
+		
+		[Embed(source="../assets/coin.mp3")] private var SoundEffectCoin:Class;
+		[Embed(source="../assets/cautiouspath.mp3")] private var backgroundMusic:Class;
 		override public function create():void 
 		{
 			super.create();
+			FlxG.playMusic(backgroundMusic, 1.0);
+			
 			level = new Level();
 			add(level);
 			
 			scores = new Dictionary();
 
-			coins = createCoinGroup(0xffffff00, 12);
-			enemies = createGoblinsFor(0xff003366,3);
+			coins = createCoinGroup(0xffffff00, 20);
+			enemies = createGoblinsFor(0xff003366,4);
 			
 			add(coins);
 			add(enemies);
@@ -148,7 +152,7 @@ package
 				scores[sprite] += 1;
 				updateScore();
 			}
-			//	FlxG.play(SoundEffectCoin,0.3);
+				FlxG.play(SoundEffectCoin,0.1);
 		}
 		
 		private function die(enemy:FlxSprite, player:FlxSprite):void {

@@ -14,5 +14,4 @@ package
 			loadGraphic(image, false,false);
 		}	
 	}
-
 }
