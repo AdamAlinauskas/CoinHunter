@@ -14,12 +14,13 @@ package
 		var coins:FlxGroup;
 		var enemies:FlxGroup;
 		var scores:Dictionary;
-		var levelArray:Array;
+	
 		
 		override public function create():void 
 		{
 			super.create();
-			buildlevel();
+			level = new Level();
+			add(level);
 			
 			scores = new Dictionary();
 
@@ -85,37 +86,7 @@ package
 			add(player);
 		}
 		
-		var width:int = 50;
-		var height = 38
 		
-		private function buildlevel():void
-		{
-			levelArray = new Array();
-			solidRow();
-			
-			for (var i = 0; i < 36; i++) {
-				addRow();			
-			}
-			solidRow();
-			
-			FlxG.bgColor = 0xff758575;
-			level = new FlxTilemap();
-			level.loadMap(FlxTilemap.arrayToCSV(levelArray, 50), FlxTilemap.ImgAuto, 0, 0, FlxTilemap.AUTO);
-			add(level);
-			
-		}
-		
-		private function addRow():void {
-				for (var i:int = 0; i < width; i++) {
-						levelArray.push(i==0 || i==width-1 ? 1 :0);
-				}
-		}
-		
-		private function solidRow():void {
-				for (var i:int = 0; i < width; i++) {
-						levelArray.push(1);
-				}
-		}
 		
 				
 		override public function update():void 
