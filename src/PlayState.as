@@ -23,22 +23,13 @@ package
 			
 			scores = new Dictionary();
 
-			coins = createEnemyGroupFor(0xffffff00, 12);
-			enemies = createEnemyGroupFor(0xff003366,3);
+			coins = createCoinGroup(0xffffff00, 12);
+			enemies = createGoblinsFor(0xff003366,3);
 			
 			add(coins);
 			add(enemies);
 						
-			player = new FlxSprite(FlxG.width/2, 30);
-			player.makeGraphic(10, 12, 0xffaa1111);
-			player.acceleration.x = 10;
-			player.maxVelocity.x = 140;
-			player.drag.x = player.maxVelocity.x * 4;
-			player.health = 100;
-			
-			player.acceleration.y = 10;
-			player.maxVelocity.y = 140;
-			player.drag.y = player.maxVelocity.y * 4;
+			player = new Player();
 			
 			healthText = new FlxText(100, 30, 50);
 			add(healthText);
@@ -64,7 +55,6 @@ package
 			
 			player.acceleration.x = 0;
 			player.acceleration.y = 0;
-			
 			
 			if (FlxG.keys.RIGHT) {
 				player.acceleration.x = player.maxVelocity.x * 4;
@@ -97,10 +87,19 @@ package
 			}
 		}
 		
-		private function createEnemyGroupFor(color:uint,count:uint) {
+		private function createGoblinsFor(color:uint,count:uint) {
 			var group:FlxGroup = new FlxGroup();
 			while(count != 0){
-				group.add(new Enemy(color));
+				group.add(new Goblin());
+				count--;
+			}
+			return group;
+		}
+		
+		private function createCoinGroup(color:uint,count:uint) {
+			var group:FlxGroup = new FlxGroup();
+			while(count != 0){
+				group.add(new Coin());
 				count--;
 			}
 			return group;
