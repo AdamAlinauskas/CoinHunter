@@ -9,12 +9,14 @@ package
 	{
 		public function Enemy(color:uint)
 		{
+			var maxSpeed:uint = 60;
+			
 			super(randomNumberBetween(10,100), randomNumberBetween(10,100));
 			makeGraphic(10, 12, color);
-			acceleration.y = randomNumberBetween(20,90) * direction();
-			maxVelocity.y = randomNumberBetween(10,90);
-			acceleration.x = randomNumberBetween(20,90) * direction();
-			maxVelocity.x = randomNumberBetween(10,90);;
+			acceleration.y = randomNumberBetween(20,maxSpeed) * direction();
+			maxVelocity.y = randomNumberBetween(10,maxSpeed);
+			acceleration.x = randomNumberBetween(20,maxSpeed) * direction();
+			maxVelocity.x = randomNumberBetween(10,maxSpeed);;
 		}
 		
 		public function randomNumberBetween(from:int, to:int):int {
