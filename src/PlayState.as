@@ -29,19 +29,21 @@ package
 
 			coins = createCoinGroup(0xffffff00, 20);
 			enemies = createGoblinsFor(0xff003366,4);
-			
 			add(coins);
 			add(enemies);
 						
 			player = new Player();
 			
-			healthText = new FlxText(100, 30, 50);
+			healthText = new FlxText(FlxG.width-65, 10, 65);
 			add(healthText);
 			
-			playerScoreText = new FlxText(10, 30, 100);
+			playerScoreText = new FlxText(8, 10, 100);
+			playerScoreText.color = 0xff0000B8;
 			add(playerScoreText);
 			
-			enemyScoreText = new FlxText(10, 50, 100);
+			
+			enemyScoreText = new FlxText(playerScoreText.width, 10, 100);
+			enemyScoreText.color = 0xff990033;
 			add(enemyScoreText);
 			
 			scores[player] = 0;
