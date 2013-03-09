@@ -11,7 +11,7 @@ package
 		{
 			var maxSpeed:uint = 60;
 			
-			super(randomNumberBetween(10,100), randomNumberBetween(10,100));
+			super(randomNumberBetween(10,FlxG.width), randomNumberBetween(10,FlxG.height));
 			makeGraphic(10, 12, color);
 			acceleration.y = randomNumberBetween(20,maxSpeed) * direction();
 			maxVelocity.y = randomNumberBetween(10,maxSpeed);
