@@ -23,9 +23,10 @@ package
 		override public function create():void 
 		{
 			super.create();
-			arrow = new FlxSprite(0, 0);
-			arrow.kill();
 			FlxG.playMusic(backgroundMusic, 1.0);
+			
+			arrow = new Arrow()
+			add(arrow);
 			
 			level = new Level();
 			add(level);
@@ -83,13 +84,7 @@ package
 				if(arrow.alive == false){
 					arrow.x = player.x +5;
 					arrow.y = player.y;
-					arrow.acceleration.x = 200;
-					arrow.maxVelocity.x = 200;
-					arrow.acceleration.y = 0;
-					arrow.makeGraphic(2, 2, 0xff472400);
 					arrow.revive();
-					arrow.mass = 200;
-					add(arrow);
 				}
 			}
 			
