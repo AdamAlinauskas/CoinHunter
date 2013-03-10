@@ -18,6 +18,7 @@ package
 		
 		[Embed(source="../assets/coin.mp3")] private var SoundEffectCoin:Class;
 		[Embed(source="../assets/cautiouspath.mp3")] private var backgroundMusic:Class;
+		[Embed(source="../assets/hit.mp3")] private var hitByArrowMusic:Class;
 		override public function create():void 
 		{
 			super.create();
@@ -147,9 +148,13 @@ package
 		
 		private function enemyCollideWithArrow(enemy:FlxSprite, arrow:FlxSprite) {
 				enemy.health -= 25;
+				
 				if (enemy.health == 0) {
 						enemy.kill();
 				}
+				
+				FlxG.play(hitByArrowMusic, 0.3);
+				
 				arrow.kill();
 		}
 		
