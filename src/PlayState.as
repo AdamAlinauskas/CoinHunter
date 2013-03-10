@@ -19,6 +19,7 @@ package
 		[Embed(source="../assets/coin.mp3")] private var SoundEffectCoin:Class;
 		[Embed(source="../assets/cautiouspath.mp3")] private var backgroundMusic:Class;
 		[Embed(source="../assets/hit.mp3")] private var hitByArrowMusic:Class;
+		[Embed(source="../assets/die.mp3")] private var dieMusic:Class;
 		override public function create():void 
 		{
 			super.create();
@@ -31,7 +32,7 @@ package
 			
 			scores = new Dictionary();
 
-			coins = createCoinGroup(0xffffff00, 20);
+			coins = createCoinGroup(0xffffff00, 41);
 			enemies = createGoblinsFor(0xff003366,4);
 			add(coins);
 			add(enemies);
@@ -52,8 +53,7 @@ package
 			scores[player] = 0;
 			scores[enemies] = 0;
 			
-			updateScore();
-			updateHealth();
+
 
 			add(player);
 		}
@@ -73,7 +73,7 @@ package
 			FlxG.collide(player, level);
 			FlxG.collide(coins, level,enemyCollideWithLevel);
 			FlxG.collide(enemies, level, enemyCollideWithLevel);
-			FlxG.collide(enemies, player,die);
+			FlxG.collide(enemies, player,enemyCollideWithPlayer);
 			FlxG.collide(coins, player, collectCoin);
 			FlxG.collide(coins, enemies, collectCoinForEnemyGroup);
 			FlxG.collide(enemies, arrow, enemyCollideWithArrow);
@@ -93,14 +93,27 @@ package
 				}
 			}
 			
+			updateScore();
+			updateHealth();
+			
 			YouWin();
+			
 		}
 		
 		private function YouWin():void {
-			if(coins.countDead() == coins.length && enemies.countDead() == enemies.length){
-				enemies.kill();
-				var text:String = scores[player] > scores[enemies] ? "You Win :)" : "Loser :(";				
-				add(new FlxText(FlxG.width / 2, FlxG.height / 3,100, text));
+			if(coins.countDead() == coins.length){
+				
+				if (scores[player] < scores[enemies]) {
+					enemies.kill();
+					add(new FlxText(FlxG.width / 2, FlxG.height / 3, 100, "You lose"));
+					
+					}
+				
+				else if(enemies.countDead() == enemies.length){
+					enemies.kill();
+					var text:String = scores[player] > scores[enemies] ? "You Win :)" : "Loser :(";				
+					add(new FlxText(FlxG.width / 2, FlxG.height / 3, 100, text));
+				}
 			}
 		}
 		
@@ -151,9 +164,11 @@ package
 				
 				if (enemy.health == 0) {
 						enemy.kill();
+						FlxG.play(dieMusic, .3);
 				}
-				
-				FlxG.play(hitByArrowMusic, 0.3);
+				else{
+					FlxG.play(hitByArrowMusic, 0.3);
+				}
 				
 				arrow.kill();
 		}
@@ -173,13 +188,18 @@ package
 				FlxG.play(SoundEffectCoin,0.1);
 		}
 		
-		private function die(enemy:FlxSprite, player:FlxSprite):void {
+		private function enemyCollideWithPlayer(enemy:FlxSprite, player:FlxSprite):void {
 			player.health -= 1;
 			updateHealth();
 			
 			if(player.health == 0){
 				player.kill();
+				FlxG.play(dieMusic, .3);
 			}
+			else {
+					FlxG.play(hitByArrowMusic, .5);
+			}
+			
 		}
 		
 		private function MovePlayer():void 
