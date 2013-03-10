@@ -88,7 +88,7 @@ package
 					arrow.acceleration.y = 0;
 					arrow.makeGraphic(2, 2, 0xff472400);
 					arrow.revive();
-					arrow.mass = 2;
+					arrow.mass = 200;
 					add(arrow);
 				}
 			}
