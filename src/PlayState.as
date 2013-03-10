@@ -6,7 +6,7 @@ package
 
 	public class PlayState extends FlxState
 	{
-		var player:FlxSprite;
+		var player:Player;
 		public var level:FlxTilemap;
 		var healthText:FlxText;
 		var playerScoreText:FlxText;
@@ -54,8 +54,6 @@ package
 			scores[player] = 0;
 			scores[enemies] = 0;
 			
-
-
 			add(player);
 		}
 						
@@ -88,11 +86,18 @@ package
 				}
 			}
 			
+			
+			
 			updateScore();
 			updateHealth();
-			
+			UpdateAnimations();
 			YouWin();
 			
+		}
+		
+		private function UpdateAnimations():void {
+			player.UpdateDirection();
+			enemies.callAll("UpdateDirection", false);		
 		}
 		
 		private function YouWin():void {

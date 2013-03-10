@@ -11,8 +11,8 @@ package
 		public static var image:Class;
 		public function Arrow() 
 		{
-			acceleration.x = 200;
-			maxVelocity.x = 200;
+			acceleration.x = 300;
+			maxVelocity.x = 300;
 			acceleration.y = 0;
 			//makeGraphic(7, 3, 0xff472400);
 			loadGraphic(image);
