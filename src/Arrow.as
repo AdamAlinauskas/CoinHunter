@@ -7,17 +7,30 @@ package
 	 */
 	public class Arrow extends FlxSprite
 	{
-		[Embed(source = '../assets/arrow.png')]
+		[Embed(source = '../assets/arrowSpriteSheet.png')]
 		public static var image:Class;
 		public function Arrow() 
 		{
-			acceleration.x = 300;
-			maxVelocity.x = 300;
+			acceleration.x = 0;
+			maxVelocity.x = 2000;
 			acceleration.y = 0;
 			//makeGraphic(7, 3, 0xff472400);
-			loadGraphic(image);
-			mass = 200;
+			loadGraphic(image,true,false,20,8);
+			mass = 1;
 			kill();
+			super.addAnimation("right", [0], 0, false);
+			super.addAnimation("left", [1], 0, false);
+		}
+		
+		public function UpdateDirection():void {
+			if (super.acceleration.x == 0)
+				return;
+			
+			if (super.acceleration.x > 0)
+				super.play("right");
+			
+			if (super.acceleration.x < 0)
+				super.play("left");	
 		}
 		
 	}

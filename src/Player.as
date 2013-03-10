@@ -10,6 +10,8 @@ package
 		[Embed(source = '../assets/archerSpriteSheet.png')]
 		public static var image:Class;
 		
+		public var facingLeft:Boolean;
+		
 		public function Player() 
 		{
 			super(FlxG.width/2, 30);
@@ -31,29 +33,35 @@ package
 		
 		public function UpdateDirection():void {
 				
-			if (super.velocity.x == 0)
-				return;
-			
-			if (super.velocity.x > 0){
-				super.play("right");
-				facing = FlxObject.RIGHT;
-			}
-			
-			if (super.velocity.x < 0){
-				super.play("left");
-				facing = FlxObject.LEFT;
-			}
+			if (facingLeft)
+				play("left");
+			else
+				play("right");
+			//if (super.acceleration.x == 0)
+				//return;
+			//
+			//if (super.acceleration.x > 0){
+				//super.play("right");
+				//facing = FlxObject.RIGHT;
+				//facingLeft = false;
+			//}
+			//
+			//if (super.acceleration.x < 0){
+				//super.play("left");
+				//facing = FlxObject.LEFT;
+			//	facingLeft = true;
+			//}
 			
 		}
 		
 		private function ArrowAccelerationDirection():int {
 			
-			return super.facing == FlxObject.LEFT ? -1 : 1;
+			return facingLeft ? -1 : 1;
 		}
 		
 		public function ShootArrow(arrow:FlxSprite):void {
-			arrow.x = super.x +5;
-			arrow.y = super.y - 5;
+			arrow.x = super.x +20;
+			arrow.y = super.y + 5;
 			arrow.acceleration.x = arrow.maxVelocity.x * ArrowAccelerationDirection();
 			arrow.revive();	
 		}

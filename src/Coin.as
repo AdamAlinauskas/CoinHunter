@@ -11,7 +11,8 @@ package
 		public function Coin() 
 		{
 			super(0xff003366);
-			loadGraphic(image, false,false);
+			loadGraphic(image, false, false);
+			
 		}	
 	}
 }

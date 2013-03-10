@@ -24,7 +24,6 @@ package
 			solidRow();
 			
 			loadMap(FlxTilemap.arrayToCSV(levelArray, 50), FlxTilemap.ImgAuto, 0, 0, FlxTilemap.AUTO);
-			super.setTile(20, 20, 1);
 		}
 		
 		private function addRow():void {

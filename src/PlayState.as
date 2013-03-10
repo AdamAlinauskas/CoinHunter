@@ -14,7 +14,7 @@ package
 		var coins:FlxGroup;
 		var enemies:FlxGroup;
 		var scores:Dictionary;
-		var arrow:FlxSprite;
+		var arrow:Arrow;
 		
 		[Embed(source="../assets/coin.mp3")] private var SoundEffectCoin:Class;
 		[Embed(source="../assets/cautiouspath.mp3")] private var backgroundMusic:Class;
@@ -69,29 +69,30 @@ package
 			
 			MovePlayer();
 			
-			FlxG.collide(player, level);
-			FlxG.collide(coins, level,enemyCollideWithLevel);
-			FlxG.collide(enemies, level, enemyCollideWithLevel);
-			FlxG.collide(enemies, player,enemyCollideWithPlayer);
-			FlxG.collide(coins, player, collectCoin);
-			FlxG.collide(coins, enemies, collectCoinForEnemyGroup);
-			FlxG.collide(enemies, arrow, enemyCollideWithArrow);
-			FlxG.collide(arrow, level, function (arrow:FlxSprite, level:FlxTilemap) { arrow.kill(); } );
-			
 			if (FlxG.keys.SPACE) {
 				if (arrow.alive == false) {
 					player.ShootArrow(arrow);
 				}
 			}
 			
+			FlxG.collide(player, level);
+			FlxG.collide(coins, level,enemyCollideWithLevel);
+			FlxG.collide(enemies, level, enemyCollideWithLevel);
+			FlxG.overlap(enemies, player,enemyCollideWithPlayer);
+			FlxG.overlap(coins, player, collectCoin);
+			FlxG.overlap(coins, enemies, collectCoinForEnemyGroup);
+			FlxG.collide(enemies, arrow, enemyCollideWithArrow);
+			FlxG.collide(arrow, level, function (arrow:FlxSprite, level:FlxTilemap) { arrow.acceleration.x = 0; arrow.velocity.x = 0; arrow.kill(); } );
+			
 			updateScore();
 			updateHealth();
 			UpdateAnimations();
-			YouWin();
+			//YouWin();
 		}
 		
 		private function UpdateAnimations():void {
 			player.UpdateDirection();
+			arrow.UpdateDirection();
 			enemies.callAll("UpdateDirection", false);		
 		}
 		
@@ -166,7 +167,10 @@ package
 					FlxG.play(hitByArrowMusic, 0.3);
 				}
 				
+				arrow.acceleration.x = 0;
+				arrow.velocity.x = 0;
 				arrow.kill();
+				
 		}
 		
 		private function collectCoinForEnemyGroup(coin:FlxSprite, sprite:FlxSprite):void {
@@ -202,9 +206,11 @@ package
 		{
 			if (FlxG.keys.RIGHT) {
 				player.acceleration.x = player.maxVelocity.x * 4;
+				player.facingLeft = false;
 			}
 			if (FlxG.keys.LEFT) {
 				player.acceleration.x = -player.maxVelocity.x * 4;
+				player.facingLeft = true;
 			}
 			if (FlxG.keys.UP) {
 				player.acceleration.y = -player.maxVelocity.y * 4;
