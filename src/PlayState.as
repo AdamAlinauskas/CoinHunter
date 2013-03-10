@@ -87,7 +87,7 @@ package
 			updateScore();
 			updateHealth();
 			UpdateAnimations();
-			//YouWin();
+			YouWin();
 		}
 		
 		private function UpdateAnimations():void {
@@ -99,15 +99,22 @@ package
 		private function YouWin():void {
 			if(coins.countDead() == coins.length || !player.alive){
 				
-				if (scores[player] < scores[enemies] || !player.alive) {
+				if (!player.alive) { 
 					enemies.kill();
-					var loseText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You lose :(");
+					coins.kill();
+					var loseText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You lose. :(");
+					loseText.setFormat(null, 16, 0xffCC0000, "center");
+					add(loseText);
+				}
+				else if (scores[player] < scores[enemies]) {
+					enemies.kill();
+					var loseText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You lose. The goblins collected more coins :(");
 					loseText.setFormat(null, 16, 0xffCC0000, "center");
 					add(loseText);
 				}
 				else if(enemies.countDead() == enemies.length){
 					enemies.kill();		
-					var winText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You Win :)");
+					var winText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You Win. You collected more coins and killed the goblins :)");
 					winText.setFormat(null, 16, 0xff003300, "center");
 					add(winText);
 				}
