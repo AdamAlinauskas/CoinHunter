@@ -101,18 +101,19 @@ package
 		}
 		
 		private function YouWin():void {
-			if(coins.countDead() == coins.length){
+			if(coins.countDead() == coins.length || !player.alive){
 				
-				if (scores[player] < scores[enemies]) {
+				if (scores[player] < scores[enemies] || !player.alive) {
 					enemies.kill();
-					add(new FlxText(FlxG.width / 2, FlxG.height / 3, 100, "You lose"));
-					
-					}
-				
+					var loseText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You lose :(");
+					loseText.setFormat(null, 16, 0xffCC0000, "center");
+					add(loseText);
+				}
 				else if(enemies.countDead() == enemies.length){
-					enemies.kill();
-					var text:String = scores[player] > scores[enemies] ? "You Win :)" : "Loser :(";				
-					add(new FlxText(FlxG.width / 2, FlxG.height / 3, 100, text));
+					enemies.kill();		
+					var winText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You Win :)");
+					winText.setFormat(null, 16, 0xff003300, "center");
+					add(winText);
 				}
 			}
 		}
