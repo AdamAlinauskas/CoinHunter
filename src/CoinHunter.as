@@ -8,7 +8,7 @@ package
 	{
 		public function CoinHunter() 
 		{
-			super(400, 300, PlayState,2);
+			super(400, 300, MenuState,2);
 		}	
 	}
 
