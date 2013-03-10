@@ -14,12 +14,15 @@ package
 		var coins:FlxGroup;
 		var enemies:FlxGroup;
 		var scores:Dictionary;
+		var arrow:FlxSprite;
 		
 		[Embed(source="../assets/coin.mp3")] private var SoundEffectCoin:Class;
 		[Embed(source="../assets/cautiouspath.mp3")] private var backgroundMusic:Class;
 		override public function create():void 
 		{
 			super.create();
+			arrow = new FlxSprite(0, 0);
+			arrow.kill();
 			FlxG.playMusic(backgroundMusic, 1.0);
 			
 			level = new Level();
@@ -60,6 +63,9 @@ package
 			
 			player.acceleration.x = 0;
 			player.acceleration.y = 0;
+			arrow.acceleration.y = 0;
+			arrow.maxVelocity.y = 0;
+			arrow.angularVelocity = 0;
 			
 			MovePlayer();
 			
@@ -68,13 +74,29 @@ package
 			FlxG.collide(enemies, level, enemyCollideWithLevel);
 			FlxG.collide(enemies, player,die);
 			FlxG.collide(coins, player, collectCoin);
-			FlxG.collide(coins, enemies, collectCoinForEnemyGroup);	
+			FlxG.collide(coins, enemies, collectCoinForEnemyGroup);
+			FlxG.collide(enemies, arrow, enemyCollideWithArrow);
+			FlxG.collide(arrow, level, function (arrow:FlxSprite, level:FlxTilemap) { arrow.kill(); } );
+			
+			if (FlxG.keys.SPACE) {
+				if(arrow.alive == false){
+					arrow.x = player.x +5;
+					arrow.y = player.y;
+					arrow.acceleration.x = 200;
+					arrow.maxVelocity.x = 200;
+					arrow.acceleration.y = 0;
+					arrow.makeGraphic(2, 2, 0xff472400);
+					arrow.revive();
+					arrow.mass = 2;
+					add(arrow);
+				}
+			}
 			
 			YouWin();
 		}
 		
 		private function YouWin():void {
-			if(coins.countDead() == coins.length){
+			if(coins.countDead() == coins.length && enemies.countDead() == enemies.length){
 				enemies.kill();
 				var text:String = scores[player] > scores[enemies] ? "You Win :)" : "Loser :(";				
 				add(new FlxText(FlxG.width / 2, FlxG.height / 3,100, text));
@@ -109,25 +131,26 @@ package
 		}
 		
 		private function enemyCollideWithLevel(enemy:FlxSprite, level:FlxTilemap):void {
-			if (enemy.isTouching(FlxObject.CEILING)) {
+			if (enemy.isTouching(FlxObject.CEILING))
 					enemy.acceleration.y = enemy.maxVelocity.y * 4;
 					
-			}
-			
-			if (enemy.isTouching(FlxObject.FLOOR)) {
+			if (enemy.isTouching(FlxObject.FLOOR))
 					enemy.acceleration.y = -enemy.maxVelocity.y * 4;
-					
-			}
 			
-			if (enemy.isTouching(FlxObject.LEFT)) {
+			if (enemy.isTouching(FlxObject.LEFT)) 
 					enemy.acceleration.x = enemy.maxVelocity.x * 4;
-					
-			}
 			
-			if (enemy.isTouching(FlxObject.RIGHT)) {
+			if (enemy.isTouching(FlxObject.RIGHT))
 					enemy.acceleration.x = -enemy.maxVelocity.x * 4;
 					
-			}
+		}
+		
+		private function enemyCollideWithArrow(enemy:FlxSprite, arrow:FlxSprite) {
+				enemy.health -= 25;
+				if (enemy.health == 0) {
+						enemy.kill();
+				}
+				arrow.kill();
 		}
 		
 		private function collectCoinForEnemyGroup(coin:FlxSprite, sprite:FlxSprite):void {

@@ -12,7 +12,8 @@ package
 		public function Goblin() 
 		{
 			super(0xff003366);
-			loadGraphic(goblinImage, false,false);
+			loadGraphic(goblinImage, false, false);
+			health = 100;
 		}
 	}
 }
