@@ -162,7 +162,7 @@ package
 		
 		private function enemyCollideWithArrow(enemy:FlxSprite, arrow:FlxSprite) {
 				enemy.health -= 25;
-				
+				enemy.flicker(1);
 				if (enemy.health == 0) {
 						enemy.kill();
 						FlxG.play(dieMusic, .3);
@@ -192,7 +192,7 @@ package
 		private function enemyCollideWithPlayer(enemy:FlxSprite, player:FlxSprite):void {
 			player.health -= 1;
 			updateHealth();
-			
+			player.flicker(1);
 			if(player.health == 0){
 				player.kill();
 				FlxG.play(dieMusic, .3);
