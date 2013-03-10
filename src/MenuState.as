@@ -26,13 +26,13 @@ package
 		txt.setFormat(null, 8, 0xFFFFFFFF, "center")
 		this.add(txt);
 		
-		txt = new FlxText(0, FlxG.height  -24, FlxG.width, "PRESS SPACEBAR TO START")
+		txt = new FlxText(0, FlxG.height  -24, FlxG.width, "PRESS ANY KEY TO START")
 		txt.setFormat(null, 8, 0xFFCC0000, "center");
 		this.add(txt);
         }
         override public function update():void
         {
-            if (FlxG.keys.SPACE)
+            if (FlxG.keys.any())
             {
                 FlxG.flash(0xffffffff, 0.75);
                 FlxG.fade(0xff000000, 1, onFade);
