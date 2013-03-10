@@ -8,12 +8,12 @@ package
 	public class Player extends FlxSprite
 	{
 		[Embed(source = '../assets/archer.png')]
-		public static var goblinImage:Class;
+		public static var image:Class;
 		
 		public function Player() 
 		{
 			super(FlxG.width/2, 30);
-			loadGraphic(goblinImage, false, false);
+			loadGraphic(image, false, false);
 			//player = new FlxSprite(FlxG.width/2, 30);
 			//makeGraphic(10, 12, 0xffaa1111);
 			acceleration.x = 10;
