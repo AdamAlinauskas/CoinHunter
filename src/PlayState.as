@@ -79,20 +79,15 @@ package
 			FlxG.collide(arrow, level, function (arrow:FlxSprite, level:FlxTilemap) { arrow.kill(); } );
 			
 			if (FlxG.keys.SPACE) {
-				if(arrow.alive == false){
-					arrow.x = player.x +5;
-					arrow.y = player.y;
-					arrow.revive();
+				if (arrow.alive == false) {
+					player.ShootArrow(arrow);
 				}
 			}
-			
-			
 			
 			updateScore();
 			updateHealth();
 			UpdateAnimations();
 			YouWin();
-			
 		}
 		
 		private function UpdateAnimations():void {

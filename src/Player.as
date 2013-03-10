@@ -34,14 +34,28 @@ package
 			if (super.velocity.x == 0)
 				return;
 			
-			if (super.velocity.x > 0)
+			if (super.velocity.x > 0){
 				super.play("right");
+				facing = FlxObject.RIGHT;
+			}
 			
-			if (super.velocity.x < 0)
+			if (super.velocity.x < 0){
 				super.play("left");
+				facing = FlxObject.LEFT;
+			}
 			
 		}
 		
+		private function ArrowAccelerationDirection():int {
+			
+			return super.facing == FlxObject.LEFT ? -1 : 1;
+		}
+		
+		public function ShootArrow(arrow:FlxSprite):void {
+			arrow.x = super.x +5;
+			arrow.y = super.y - 5;
+			arrow.acceleration.x = arrow.maxVelocity.x * ArrowAccelerationDirection();
+			arrow.revive();	
+		}
 	}
-
 }
