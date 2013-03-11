@@ -6,15 +6,17 @@ package
 
 	public class PlayState extends FlxState
 	{
-		var player:Player;
+		private var player:Player;
 		public var level:FlxTilemap;
-		var healthText:FlxText;
-		var playerScoreText:FlxText;
-		var enemyScoreText:FlxText;
-		var coins:FlxGroup;
-		var enemies:FlxGroup;
-		var scores:Dictionary;
-		var arrow:Arrow;
+		private var healthText:FlxText;
+		private var playerScoreText:FlxText;
+		private var enemyScoreText:FlxText;
+		private var coins:FlxGroup;
+		private var enemies:FlxGroup;
+		private var scores:Dictionary;
+		private var arrow:Arrow;
+		private var isGameOver:Boolean;
+		private var backGroundMusicPlaying:FlxSound;
 		
 		[Embed(source="../assets/coin.mp3")] private var SoundEffectCoin:Class;
 		[Embed(source="../assets/cautiouspath.mp3")] private var backgroundMusic:Class;
@@ -23,7 +25,7 @@ package
 		override public function create():void 
 		{
 			super.create();
-			FlxG.playMusic(backgroundMusic, 1.0);
+			backGroundMusicPlaying = FlxG.play(backgroundMusic, 1.0,true);
 			
 			arrow = new Arrow()
 			add(arrow);
@@ -34,7 +36,7 @@ package
 			scores = new Dictionary();
 
 			coins = createCoinGroup(0xffffff00, 41);
-			enemies = createGoblinsFor(0xff003366,4);
+			enemies = createGoblinsFor(0xff003366,3);
 			add(coins);
 			add(enemies);
 						
@@ -82,12 +84,21 @@ package
 			FlxG.overlap(coins, player, collectCoin);
 			FlxG.overlap(coins, enemies, collectCoinForEnemyGroup);
 			FlxG.collide(enemies, arrow, enemyCollideWithArrow);
-			FlxG.collide(arrow, level, function (arrow:FlxSprite, level:FlxTilemap) { arrow.acceleration.x = 0; arrow.velocity.x = 0; arrow.kill(); } );
+			FlxG.collide(arrow, level, function (arrow:FlxSprite, level:FlxTilemap) { arrow.kill(); } );
 			
 			updateScore();
 			updateHealth();
 			UpdateAnimations();
-			YouWin();
+			EndGame();
+			
+			Restart();
+		}
+		
+		private function Restart():void {
+			if (isGameOver && FlxG.keys.X) {
+				backGroundMusicPlaying.stop();
+				FlxG.switchState(new PlayState());
+			}
 		}
 		
 		private function UpdateAnimations():void {
@@ -96,29 +107,33 @@ package
 			enemies.callAll("UpdateDirection", false);		
 		}
 		
-		private function YouWin():void {
+		private function EndGame():void {
 			if(coins.countDead() == coins.length || !player.alive){
-				
+				var loseText:FlxText;
 				if (!player.alive) { 
-					enemies.kill();
-					coins.kill();
-					var loseText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You lose. :(");
-					loseText.setFormat(null, 16, 0xffCC0000, "center");
-					add(loseText);
+					gameOver("You lose. :(",0xff990033);
 				}
 				else if (scores[player] < scores[enemies]) {
-					enemies.kill();
-					var loseText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You lose. The goblins collected more coins :(");
-					loseText.setFormat(null, 16, 0xffCC0000, "center");
-					add(loseText);
+					gameOver("You lose. The goblins collected more coins :(",0xff990033);
 				}
 				else if(enemies.countDead() == enemies.length){
-					enemies.kill();		
-					var winText:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, "You Win. You collected more coins and killed the goblins :)");
-					winText.setFormat(null, 16, 0xff003300, "center");
-					add(winText);
+					gameOver("You Win. You collected more coins and killed the goblins :)",0xff003300);
 				}
 			}
+		}
+		
+		private function gameOver(text:String,color:int):void {
+			enemies.kill();
+			coins.kill();
+			
+			var description:FlxText = new FlxText(0, FlxG.height / 3, FlxG.width, text);
+			description.setFormat(null, 12, color, "center");
+			add(description);
+			
+			isGameOver = true;
+			var tryAgainText:FlxText = new FlxText(0, FlxG.height / 2, FlxG.width, "Press X to try again");
+			tryAgainText.setFormat(null, 12, 0xff000000, "center");
+			add(tryAgainText);
 		}
 		
 		private function createGoblinsFor(color:uint,count:uint) {
@@ -173,9 +188,6 @@ package
 				else{
 					FlxG.play(hitByArrowMusic, 0.3);
 				}
-				
-				arrow.acceleration.x = 0;
-				arrow.velocity.x = 0;
 				arrow.kill();
 				
 		}

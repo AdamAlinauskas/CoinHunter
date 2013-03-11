@@ -16,7 +16,7 @@ package
 			acceleration.y = 0;
 			//makeGraphic(7, 3, 0xff472400);
 			loadGraphic(image,true,false,20,8);
-			mass = 1;
+			mass = 100;
 			kill();
 			super.addAnimation("right", [0], 0, false);
 			super.addAnimation("left", [1], 0, false);
@@ -31,6 +31,13 @@ package
 			
 			if (super.acceleration.x < 0)
 				super.play("left");	
+		}
+		
+		override public function kill():void 
+		{
+			super.acceleration.x = 0;
+			super.velocity.x = 0; 
+			super.kill();
 		}
 		
 	}

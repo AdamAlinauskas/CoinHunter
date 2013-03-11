@@ -4,9 +4,9 @@ package
 	
 	public class Level extends FlxTilemap
 	{
-		var levelWidth:int = 50;
-		var levelHeight:int = 38;
-		var levelArray:Array;
+		private var levelWidth:int = 50;
+		private var levelHeight:int = 38;
+		private var levelArray:Array;
 		
 		public function Level() 
 		{
