@@ -84,7 +84,7 @@ package
 			FlxG.overlap(coins, player, collectCoin);
 			FlxG.overlap(coins, enemies, collectCoinForEnemyGroup);
 			FlxG.collide(enemies, arrow, enemyCollideWithArrow);
-			FlxG.collide(arrow, level, function (arrow:FlxSprite, level:FlxTilemap) { arrow.kill(); } );
+			FlxG.collide(arrow, level, function (arrow:FlxSprite, level:FlxTilemap):void { arrow.kill(); } );
 			
 			updateScore();
 			updateHealth();
@@ -136,7 +136,7 @@ package
 			add(tryAgainText);
 		}
 		
-		private function createGoblinsFor(color:uint,count:uint) {
+		private function createGoblinsFor(color:uint,count:uint):FlxGroup {
 			var group:FlxGroup = new FlxGroup();
 			while(count != 0){
 				group.add(new Goblin());
@@ -145,7 +145,7 @@ package
 			return group;
 		}
 		
-		private function createCoinGroup(color:uint,count:uint) {
+		private function createCoinGroup(color:uint,count:uint):FlxGroup {
 			var group:FlxGroup = new FlxGroup();
 			while(count != 0){
 				group.add(new Coin());
@@ -178,7 +178,7 @@ package
 					
 		}
 		
-		private function enemyCollideWithArrow(enemy:FlxSprite, arrow:FlxSprite) {
+		private function enemyCollideWithArrow(enemy:FlxSprite, arrow:FlxSprite):void {
 				enemy.health -= 25;
 				enemy.flicker(1);
 				if (enemy.health == 0) {
@@ -237,10 +237,6 @@ package
 			if (FlxG.keys.DOWN) {
 				player.acceleration.y = player.maxVelocity.y * 4;
 			}
-		}
-		
-		public function randomNumberBetween(from:int, to:int):int {
-			return Math.floor(Math.random()*(to-from+1)+from);
 		}
 	}
 }

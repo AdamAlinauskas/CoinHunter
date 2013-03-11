@@ -11,25 +11,19 @@ package
 		{
 			var maxSpeed:uint = 60;
 			
-			super(randomNumberBetween(10,FlxG.width-40), randomNumberBetween(10,FlxG.height-40));
+			super(Utility.RandomNumberBetween(10,FlxG.width-40), Utility.RandomNumberBetween(10,FlxG.height-40));
 			makeGraphic(10, 12, color);
-			acceleration.y = randomNumberBetween(20,maxSpeed) * direction();
-			maxVelocity.y = randomNumberBetween(10,maxSpeed);
-			acceleration.x = randomNumberBetween(20,maxSpeed) * direction();
-			maxVelocity.x = randomNumberBetween(10,maxSpeed);;
-		}
-		
-		public function randomNumberBetween(from:int, to:int):int {
-			return Math.floor(Math.random()*(to-from+1)+from);
+			acceleration.y = Utility.RandomNumberBetween(20,maxSpeed) * direction();
+			maxVelocity.y = Utility.RandomNumberBetween(10,maxSpeed);
+			acceleration.x = Utility.RandomNumberBetween(20,maxSpeed) * direction();
+			maxVelocity.x = Utility.RandomNumberBetween(10,maxSpeed);;
 		}
 		
 		public function direction():int {
-			if (randomNumberBetween(0, 100) % 2)
+			if (Utility.RandomNumberBetween(0, 100) % 2)
 				return 1;
 			else
 				return -1;
 		}
-		
 	}
-
 }
