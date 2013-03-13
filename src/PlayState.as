@@ -63,13 +63,9 @@ package
 		{
 			super.update();
 			
-			player.acceleration.x = 0;
-			player.acceleration.y = 0;
 			arrow.acceleration.y = 0;
 			arrow.maxVelocity.y = 0;
 			arrow.angularVelocity = 0;
-			
-			MovePlayer();
 			
 			if (FlxG.keys.SPACE) {
 				if (arrow.alive == false) {
@@ -217,25 +213,6 @@ package
 			}
 			else {
 					FlxG.play(hitByArrowMusic, .5);
-			}
-			
-		}
-		
-		private function MovePlayer():void 
-		{
-			if (FlxG.keys.RIGHT) {
-				player.acceleration.x = player.maxVelocity.x * 4;
-				player.facingLeft = false;
-			}
-			if (FlxG.keys.LEFT) {
-				player.acceleration.x = -player.maxVelocity.x * 4;
-				player.facingLeft = true;
-			}
-			if (FlxG.keys.UP) {
-				player.acceleration.y = -player.maxVelocity.y * 4;
-			}
-			if (FlxG.keys.DOWN) {
-				player.acceleration.y = player.maxVelocity.y * 4;
 			}
 		}
 	}

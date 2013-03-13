@@ -31,6 +31,29 @@ package
 			super.addAnimation("left", [1], 0, false);
 		}
 		
+		override public function update():void 
+		{
+			super.update();
+			
+			acceleration.x = 0;
+			acceleration.y = 0;
+			
+			if (FlxG.keys.RIGHT) {
+				acceleration.x = maxVelocity.x * 4;
+				facingLeft = false;
+			}
+			if (FlxG.keys.LEFT) {
+				acceleration.x = -maxVelocity.x * 4;
+				facingLeft = true;
+			}
+			if (FlxG.keys.UP) {
+				acceleration.y = -maxVelocity.y * 4;
+			}
+			if (FlxG.keys.DOWN) {
+				acceleration.y = maxVelocity.y * 4;
+			}
+		}
+		
 		public function UpdateDirection():void {
 				
 			if (facingLeft)
@@ -65,5 +88,7 @@ package
 			arrow.acceleration.x = arrow.maxVelocity.x * ArrowAccelerationDirection();
 			arrow.revive();	
 		}
+		
+		
 	}
 }
