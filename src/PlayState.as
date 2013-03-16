@@ -39,6 +39,8 @@ package
 			enemies = createGoblinsFor(0xff003366,3);
 			add(coins);
 			add(enemies);
+			Registry.init();
+			add(Registry.blood);
 						
 			player = new Player();
 			
@@ -106,6 +108,7 @@ package
 		
 		private function EndGame():void {
 			if(coins.countDead() == coins.length || !player.alive){
+				backGroundMusicPlaying.stop();
 				var loseText:FlxText;
 				if (!player.alive) { 
 					gameOver("You lose. :(",0xff990033);
@@ -180,6 +183,7 @@ package
 				enemy.flicker(1);
 				if (enemy.health == 0) {
 						enemy.kill();
+						Registry.blood.explodeBlock(enemy.x, enemy.y+5);
 						FlxG.play(dieMusic, .3);
 				}
 				else{
