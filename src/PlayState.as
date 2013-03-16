@@ -53,6 +53,7 @@ package
 			enemyScoreText.color = 0xff990033;
 			add(enemyScoreText);
 			
+			
 			scores[player] = 0;
 			scores[enemies] = 0;
 			
